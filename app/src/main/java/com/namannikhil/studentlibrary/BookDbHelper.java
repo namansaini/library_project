@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BookDbHelper extends SQLiteOpenHelper{
 
-    private static final String DATABASE_NAME ="library.db";
+    private static final String DATABASE_NAME ="library2.db";
     private static final int DATABASE_VERSION = 1;
     public BookDbHelper(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);

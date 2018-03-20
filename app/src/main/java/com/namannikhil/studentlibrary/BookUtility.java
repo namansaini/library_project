@@ -1,8 +1,10 @@
 package com.namannikhil.studentlibrary;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +14,11 @@ import java.util.List;
  */
 
 public class BookUtility {
-    public static void insertFakeData(SQLiteDatabase db) {
+    public static void insertFakeData(SQLiteDatabase db, Context context) {
         if (db == null) {
             return;
         }
+
 
         List<ContentValues> list = new ArrayList<ContentValues>();
 
@@ -62,6 +65,7 @@ public class BookUtility {
 
         } finally {
             db.endTransaction();
+            Toast.makeText(context, "Write successful", Toast.LENGTH_LONG).show();
         }
     }
 }

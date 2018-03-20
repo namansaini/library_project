@@ -19,14 +19,18 @@ public class AvailBooks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avail_books);
-        BookUtility.insertFakeData(mDb);
+
 
         Cursor cursor=queryReturn();
 
         mRecyclerView=(RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
+       // mRecyclerView.setHasFixedSize(true);
+
         mLayoutManager= new LinearLayoutManager(this);
         mAdapter=new AvailBooksAdapter(this,cursor);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+       // mAdapter.swapCursor(queryReturn());
     }
 
     private Cursor queryReturn()

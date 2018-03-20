@@ -18,13 +18,20 @@ public class MainActivity extends AppCompatActivity {
     private EditText mPassword;
     private SQLiteDatabase mDb;
     StudentDbHelper helper=new StudentDbHelper(this);
+    BookDbHelper helper2=new BookDbHelper(this);
+    private int run=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDb=helper.getWritableDatabase();
-        Utility.insertFakeData(mDb);
+        if(true) {
+            mDb = helper.getWritableDatabase();
+            Utility.insertFakeData(mDb);
 
+            mDb = helper2.getWritableDatabase();
+            BookUtility.insertFakeData(mDb, getApplicationContext());
+            run=0;
+        }
         mUsername=(EditText) findViewById(R.id.username_edit_box);
         mPassword=(EditText) findViewById(R.id.password_edit_box);
         Button button=findViewById(R.id.button);

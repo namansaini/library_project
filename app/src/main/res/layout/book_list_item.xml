@@ -10,6 +10,7 @@
         android:layout_height="36dp"
         android:id="@+id/booksAvailable"
         android:layout_gravity="center_vertical"
+
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textSize="24sp"
