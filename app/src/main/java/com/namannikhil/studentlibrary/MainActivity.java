@@ -1,9 +1,7 @@
 package com.namannikhil.studentlibrary;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText mUsername;
     private EditText mPassword;
     private SQLiteDatabase mDb;
-    StudentDbHelper helper=new StudentDbHelper(this);
-    BookDbHelper helper2=new BookDbHelper(this);
+    DbHelper helper=new DbHelper(this);
+
     private int run=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if(true) {
             mDb = helper.getWritableDatabase();
+           // BookUtility.insertFakeData(mDb, getApplicationContext());
             Utility.insertFakeData(mDb);
-
-            mDb = helper2.getWritableDatabase();
-            BookUtility.insertFakeData(mDb, getApplicationContext());
             run=0;
         }
         mUsername=(EditText) findViewById(R.id.username_edit_box);

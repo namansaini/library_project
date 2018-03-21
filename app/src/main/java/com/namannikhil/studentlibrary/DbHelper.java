@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by namansaini on 15-02-2018.
  */
 
-public class StudentDbHelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME ="library.db";
     private static final int DATABASE_VERSION = 1;
-    public StudentDbHelper(Context context)
+    public DbHelper(Context context)
     {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
@@ -30,12 +30,23 @@ public class StudentDbHelper extends SQLiteOpenHelper {
                         StudentContract.StudentEntry.COLUMN_PHONE+" VARCHAR(10) NOT NULL, "+
                         StudentContract.StudentEntry.COLUMN_FINE+" INT NOT NULL, "+
                         StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED+" INT NOT NULL);";
+        final String createBook=
+                "CREATE TABLE "+ BookContract.BookEntry.TABLE_NAME+
+                        " ("+
+                        BookContract.BookEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                        BookContract.BookEntry.COLUMN_NAME+" VARCHAR(100) NOT NULL, "+
+                        BookContract.BookEntry.COLUMN_AUTHOR+" VARCHAR(100) NOT NULL, "+
+                        BookContract.BookEntry.COLUMN_FLAG+" INT NOT NULL, "+
+                        BookContract.BookEntry.COLUMN_QTY+" INT NOT NULL, " +
+                        BookContract.BookEntry.COLUMN_PURCHASE_DT+" VARCHAR(15) NOT NULL);";
+        sqLiteDatabase.execSQL(createBook);
         sqLiteDatabase.execSQL(createStudent);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + StudentContract.StudentEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + BookContract.BookEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

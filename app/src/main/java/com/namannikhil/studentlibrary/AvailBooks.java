@@ -13,7 +13,7 @@ public class AvailBooks extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SQLiteDatabase mDb;
-    BookDbHelper helper=new BookDbHelper(this);
+    DbHelper helper=new DbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

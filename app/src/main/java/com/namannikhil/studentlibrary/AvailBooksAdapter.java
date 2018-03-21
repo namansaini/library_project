@@ -35,6 +35,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             return;
         }
 
+        Toast.makeText(mContext,"Cursor Full",Toast.LENGTH_LONG).show();
         String title=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME));
         String author=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_AUTHOR));
         int quantity=mCursor.getInt(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_QTY));
@@ -47,7 +48,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
     @Override
     public int getItemCount()
     {
-        return mCursor.getCount();
+        return 4;// mCursor.getCount();
     }
 
    /* public void swapCursor(Cursor newCursor) {
