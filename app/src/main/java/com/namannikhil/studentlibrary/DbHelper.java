@@ -39,8 +39,21 @@ public class DbHelper extends SQLiteOpenHelper {
                         BookContract.BookEntry.COLUMN_FLAG+" INT NOT NULL, "+
                         BookContract.BookEntry.COLUMN_QTY+" INT NOT NULL, " +
                         BookContract.BookEntry.COLUMN_PURCHASE_DT+" VARCHAR(15) NOT NULL);";
+        final String createIssues=
+                "CREATE TABLE "+ IssuesContract.IssuesEntry.TABLE_NAME+
+                        " ("+
+                        IssuesContract.IssuesEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                        IssuesContract.IssuesEntry.COLUMN_BOOK_ID+" INT NOT NULL, "+
+                        IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+" INT NOT NULL, "+
+                        IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE+" VARCHAR(20) NOT NULL, "+
+                        IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE+" VARCHAR(20) NOT NULL, " +
+                        "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+") REFERENCES "+ BookContract.BookEntry.TABLE_NAME+"("+
+                        BookContract.BookEntry._ID+"), "+
+                        "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+") REFERENCES "+ StudentContract.StudentEntry.TABLE_NAME+"("+
+                        StudentContract.StudentEntry._ID+");";
         sqLiteDatabase.execSQL(createBook);
         sqLiteDatabase.execSQL(createStudent);
+        sqLiteDatabase.execSQL(createIssues);
     }
 
     @Override
