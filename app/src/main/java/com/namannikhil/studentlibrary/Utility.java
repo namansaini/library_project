@@ -57,7 +57,7 @@ public class Utility {
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Databse Management System");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Almasri Navathe");
         cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
-        cv.put(BookContract.BookEntry.COLUMN_QTY, 5);
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 6);
         cv.put(BookContract.BookEntry.COLUMN_NAME, "08-07-2007");
         list2.add(cv);
 
@@ -73,7 +73,7 @@ public class Utility {
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Digital Design");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "M. Morris Mano");
         cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
-        cv.put(BookContract.BookEntry.COLUMN_QTY, 5);
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 10);
         cv.put(BookContract.BookEntry.COLUMN_NAME, "26-10-2008");
         list2.add(cv);
         try {

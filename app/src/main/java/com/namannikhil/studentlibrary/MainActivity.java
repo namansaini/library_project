@@ -15,19 +15,20 @@ public class MainActivity extends AppCompatActivity {
     private EditText mUsername;
     private EditText mPassword;
     private SQLiteDatabase mDb;
-    DbHelper helper=new DbHelper(this);
 
+    DbHelper helper=new DbHelper(this);
     private int run=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(true) {
+
+       /* if(true) {
             mDb = helper.getWritableDatabase();
            // BookUtility.insertFakeData(mDb, getApplicationContext());
             Utility.insertFakeData(mDb);
             run=0;
-        }
+        }*/
         mUsername=(EditText) findViewById(R.id.username_edit_box);
         mPassword=(EditText) findViewById(R.id.password_edit_box);
         Button button=findViewById(R.id.button);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                  if (mPassword.getText().toString().equals(password)) {
                      Toast.makeText(this, "Welcome " + Fname +" "+ Lname, Toast.LENGTH_LONG).show();
                      Intent intent =new Intent(this,OptionsActivity.class);
+                     intent.putExtra("username",mUsername.getText().toString());
                      startActivity(intent);
                  } else {
                      Toast.makeText(this, "Password Incorrect", Toast.LENGTH_LONG).show();

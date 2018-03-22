@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.logging.Handler;
+
 /**
  * Created by namansaini on 15-03-2018.
  */
@@ -27,6 +29,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull abcViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position))
@@ -35,20 +38,21 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             return;
         }
 
-        Toast.makeText(mContext,"Cursor Full",Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext,"Cursor Has Data",Toast.LENGTH_LONG).show();
         String title=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME));
         String author=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_AUTHOR));
         int quantity=mCursor.getInt(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_QTY));
-        holder.mAvailable.setText(quantity);
+        holder.mAvailable.setText(quantity+"");
         holder.mTitle.setText(title);
         holder.mAuthor.setText(author);
-        this.notifyDataSetChanged();
+
     }
+
 
     @Override
     public int getItemCount()
     {
-        return 4;// mCursor.getCount();
+        return mCursor.getCount();
     }
 
    /* public void swapCursor(Cursor newCursor) {
@@ -60,8 +64,8 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             // Force the RecyclerView to refresh
             this.notifyDataSetChanged();
         }
-    }
-*/
+    }*/
+
     public AvailBooksAdapter(Context context,Cursor cursor)
     {
         mContext=context;
@@ -79,6 +83,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             mTitle=(TextView) itemView.findViewById(R.id.book_title);
             mAuthor=(TextView) itemView.findViewById(R.id.book_author);
         }
+
 
     }
 }
