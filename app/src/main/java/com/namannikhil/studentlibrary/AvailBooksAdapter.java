@@ -20,6 +20,12 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
 
     private Cursor mCursor;
     private Context mContext;
+    final public ListItemClickListener mOnClickListener;
+    public interface ListItemClickListener
+    {
+        void OnListItemClick(int _id);
+    }
+
     @NonNull
     @Override
     public abcViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,14 +40,13 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
     public void onBindViewHolder(@NonNull abcViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position))
         {
-            Toast.makeText(mContext,"Cursor Empty",Toast.LENGTH_LONG).show();
             return;
         }
 
-        Toast.makeText(mContext,"Cursor Has Data",Toast.LENGTH_LONG).show();
         String title=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME));
         String author=mCursor.getString(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_AUTHOR));
         int quantity=mCursor.getInt(mCursor.getColumnIndex(BookContract.BookEntry.COLUMN_QTY));
+
         holder.mAvailable.setText(quantity+"");
         holder.mTitle.setText(title);
         holder.mAuthor.setText(author);
@@ -55,7 +60,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         return mCursor.getCount();
     }
 
-   /* public void swapCursor(Cursor newCursor) {
+   public void swapCursor(Cursor newCursor) {
         // Always close the previous mCursor first
         if (mCursor != null)
             mCursor.close();
@@ -64,15 +69,16 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             // Force the RecyclerView to refresh
             this.notifyDataSetChanged();
         }
-    }*/
+    }
 
-    public AvailBooksAdapter(Context context,Cursor cursor)
+    public AvailBooksAdapter(Context context,Cursor cursor,ListItemClickListener listener)
     {
         mContext=context;
         mCursor=cursor;
+        mOnClickListener=listener;
     }
 
-    public static class abcViewHolder extends RecyclerView.ViewHolder
+    public class abcViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView mAvailable;
         TextView mTitle;
@@ -82,8 +88,18 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
             mAvailable=(TextView) itemView.findViewById(R.id.booksAvailable);
             mTitle=(TextView) itemView.findViewById(R.id.book_title);
             mAuthor=(TextView) itemView.findViewById(R.id.book_author);
+            itemView.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View view) {
+            int clickedItemIndex=getAdapterPosition();
+
+            mCursor.moveToPosition(clickedItemIndex);
+            int _id=mCursor.getInt(mCursor.getColumnIndex(BookContract.BookEntry._ID));
+            mOnClickListener.OnListItemClick(_id);
+
+        }
     }
 }

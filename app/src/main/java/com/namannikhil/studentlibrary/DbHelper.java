@@ -50,10 +50,11 @@ public class DbHelper extends SQLiteOpenHelper {
                         "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+") REFERENCES "+ BookContract.BookEntry.TABLE_NAME+"("+
                         BookContract.BookEntry._ID+"), "+
                         "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+") REFERENCES "+ StudentContract.StudentEntry.TABLE_NAME+"("+
-                        StudentContract.StudentEntry._ID+");";
+                        StudentContract.StudentEntry._ID+"));";
         sqLiteDatabase.execSQL(createBook);
         sqLiteDatabase.execSQL(createStudent);
         sqLiteDatabase.execSQL(createIssues);
+        Utility.insertFakeData(sqLiteDatabase);
     }
 
     @Override

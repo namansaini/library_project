@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                  if (mPassword.getText().toString().equals(password)) {
                      Toast.makeText(this, "Welcome " + Fname +" "+ Lname, Toast.LENGTH_LONG).show();
                      Intent intent =new Intent(this,OptionsActivity.class);
-                     intent.putExtra("username",mUsername.getText().toString());
+                     intent.putExtra("sId",cursor.getInt(cursor.getColumnIndex(StudentContract.StudentEntry._ID)));
                      startActivity(intent);
                  } else {
                      Toast.makeText(this, "Password Incorrect", Toast.LENGTH_LONG).show();
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private Cursor search()
     {
-        String[] projection={StudentContract.StudentEntry.COLUMN_USERNAME, StudentContract.StudentEntry.COLUMN_PASSWORD, StudentContract.StudentEntry.COLUMN_FNAME, StudentContract.StudentEntry.COLUMN_LNAME};
+        String[] projection={StudentContract.StudentEntry._ID,StudentContract.StudentEntry.COLUMN_USERNAME, StudentContract.StudentEntry.COLUMN_PASSWORD, StudentContract.StudentEntry.COLUMN_FNAME, StudentContract.StudentEntry.COLUMN_LNAME};
         String selection="username=?";
         String[] selectionArgs={mUsername.getText().toString()};
         mDb=helper.getReadableDatabase();
