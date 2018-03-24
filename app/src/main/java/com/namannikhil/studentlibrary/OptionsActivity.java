@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.Button;
 
 public class OptionsActivity extends AppCompatActivity {
-private String sId;
+private int sId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
         Intent intent=getIntent();
-        sId=intent.getStringExtra("sId");
+        sId=intent.getIntExtra("sId",1);
         Button availableBooks=(Button)findViewById(R.id.available_books);
         Button issuedBooks=(Button)findViewById(R.id.issued_books);
         Button payFine=(Button)findViewById(R.id.pay_fine);
@@ -34,14 +34,14 @@ private String sId;
     {
         Intent intent =new Intent(this,AvailBooks.class);
         intent.putExtra("sId",sId);
-        intent.putExtra("ButtonNo",1);
+        intent.putExtra("ButtonNo",2);
         startActivity(intent);
     }
     void newScreen2()
     {
         Intent intent=new Intent(this,AvailBooks.class);
         intent.putExtra("sId",sId);
-        intent.putExtra("ButtonNo",2);
+        intent.putExtra("ButtonNo",1);
         startActivity(intent);
     }
 }

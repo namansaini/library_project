@@ -16,7 +16,7 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
     private RecyclerView.LayoutManager mLayoutManager;
     private SQLiteDatabase mDb;
 
-    private String username;
+    private int sId;
     private int buttonNo;
     private Cursor cursor;
     @Override
@@ -24,14 +24,14 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avail_books);
 
-        username=getIntent().getStringExtra("username");
+        sId=getIntent().getIntExtra("sId",1);
         buttonNo=getIntent().getIntExtra("ButtonNo",1);
 
         DbHelper helper=new DbHelper(this);
         mDb=helper.getReadableDatabase();
         cursor=queryReturn(buttonNo);
 
-        mRecyclerView=(RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView=findViewById(R.id.my_recycler_view);
         mRecyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
         mRecyclerView.setHasFixedSize(false);
 
@@ -44,16 +44,23 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
 
     private Cursor queryReturn(int buttonNo)
     {
-        if(buttonNo==1)
+        if(buttonNo==2)
         {
             String projection[] = {BookContract.BookEntry._ID,BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_QTY};
             String selection = BookContract.BookEntry.COLUMN_FLAG + "=0";
             return mDb.query(BookContract.BookEntry.TABLE_NAME, projection, selection, null, null, null, null);
         }
         else
-        if(buttonNo==2)
+        if(buttonNo==1)
         {
-
+            String query="SELECT "+ BookContract.BookEntry.COLUMN_NAME+", "
+                    + BookContract.BookEntry.COLUMN_AUTHOR+", "
+                    + BookContract.BookEntry.COLUMN_PURCHASE_DT+", "
+                    + IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE+", "
+                    + IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE+" FROM "+ IssuesContract.IssuesEntry.TABLE_NAME+" I, "+ BookContract.BookEntry.TABLE_NAME+" B "
+                    + "WHERE I."+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+"="+sId+" AND I."+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+"="+ BookContract.BookEntry._ID
+                    +";";
+            return mDb.rawQuery(query,null);
         }
         return null;
     }
@@ -62,7 +69,7 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
     public void OnListItemClick(int bookId) {
         Intent intent =new Intent(this,DetailActivity.class);
         intent.putExtra("bookId",bookId);
-        intent.putExtra("username",username);
+        intent.putExtra("sId",sId);
         startActivity(intent);
     }
 

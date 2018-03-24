@@ -26,6 +26,16 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         void OnListItemClick(int _id);
     }
 
+    public void swapCursor(Cursor newCursor) {
+        // Always close the previous mCursor first
+        if (mCursor != null)
+            mCursor.close();
+        mCursor = newCursor;
+        if (newCursor != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
+    }
     @NonNull
     @Override
     public abcViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,16 +70,7 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         return mCursor.getCount();
     }
 
-   public void swapCursor(Cursor newCursor) {
-        // Always close the previous mCursor first
-        if (mCursor != null)
-            mCursor.close();
-        mCursor = newCursor;
-        if (newCursor != null) {
-            // Force the RecyclerView to refresh
-            this.notifyDataSetChanged();
-        }
-    }
+
 
     public AvailBooksAdapter(Context context,Cursor cursor,ListItemClickListener listener)
     {
