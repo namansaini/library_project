@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.ListItemClickListener {
@@ -44,13 +45,6 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
 
     private Cursor queryReturn(int buttonNo)
     {
-        if(buttonNo==2)
-        {
-            String projection[] = {BookContract.BookEntry._ID,BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_QTY};
-            String selection = BookContract.BookEntry.COLUMN_FLAG + "=0";
-            return mDb.query(BookContract.BookEntry.TABLE_NAME, projection, selection, null, null, null, null);
-        }
-        else
         if(buttonNo==1)
         {
             String query="SELECT "+ BookContract.BookEntry.COLUMN_NAME+", "
@@ -58,9 +52,17 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
                     + BookContract.BookEntry.COLUMN_PURCHASE_DT+", "
                     + IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE+", "
                     + IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE+" FROM "+ IssuesContract.IssuesEntry.TABLE_NAME+" I, "+ BookContract.BookEntry.TABLE_NAME+" B "
-                    + "WHERE I."+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+"="+sId+" AND I."+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+"="+ BookContract.BookEntry._ID
+                    + "WHERE I."+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+"="+sId+" AND I."+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+"=B."+ BookContract.BookEntry._ID
                     +";";
+            Log.e("asd",query);
             return mDb.rawQuery(query,null);
+        }
+        else
+        if(buttonNo==2)
+        {
+            String projection[] = {BookContract.BookEntry._ID,BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_QTY};
+            String selection = BookContract.BookEntry.COLUMN_FLAG + "=0";
+            return mDb.query(BookContract.BookEntry.TABLE_NAME, projection, selection, null, null, null, null);
         }
         return null;
     }
