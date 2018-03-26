@@ -34,14 +34,12 @@ private int sId;
     {
         Intent intent =new Intent(this,AvailBooks.class);
         intent.putExtra("sId",sId);
-        intent.putExtra("ButtonNo",2);
         startActivity(intent);
     }
     void newScreen2()
     {
-        Intent intent=new Intent(this,AvailBooks.class);
+        Intent intent=new Intent(this,IssuedBooks.class);
         intent.putExtra("sId",sId);
-        intent.putExtra("ButtonNo",1);
         startActivity(intent);
     }
 }
