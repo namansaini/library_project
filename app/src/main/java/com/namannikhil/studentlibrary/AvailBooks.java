@@ -46,7 +46,7 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
     {
 
             String projection[] = {BookContract.BookEntry._ID,BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_QTY};
-            String selection = BookContract.BookEntry.COLUMN_FLAG + "=0";
+            String selection =BookContract.BookEntry.COLUMN_QTY+">0";
             return mDb.query(BookContract.BookEntry.TABLE_NAME, projection, selection, null, null, null, null);
 
     }

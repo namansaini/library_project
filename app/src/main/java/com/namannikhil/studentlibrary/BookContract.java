@@ -11,7 +11,6 @@ public class BookContract {
         public static final String TABLE_NAME="books";
         public static final String COLUMN_NAME="title";
         public static final String COLUMN_AUTHOR="author";
-        public static final String COLUMN_FLAG="flag";
         public static final String COLUMN_PURCHASE_DT="purchase_date";
         public static final String COLUMN_QTY="quantity";
     }

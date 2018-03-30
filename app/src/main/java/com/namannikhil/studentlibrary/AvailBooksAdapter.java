@@ -86,9 +86,9 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         TextView mAuthor;
         public abcViewHolder(View itemView) {
             super(itemView);
-            mAvailable=(TextView) itemView.findViewById(R.id.booksAvailable);
-            mTitle=(TextView) itemView.findViewById(R.id.book_title);
-            mAuthor=(TextView) itemView.findViewById(R.id.book_author);
+            mAvailable= itemView.findViewById(R.id.booksAvailable);
+            mTitle=itemView.findViewById(R.id.book_title);
+            mAuthor= itemView.findViewById(R.id.book_author);
             itemView.setOnClickListener(this);
         }
 
@@ -96,7 +96,6 @@ public class AvailBooksAdapter extends RecyclerView.Adapter<AvailBooksAdapter.ab
         @Override
         public void onClick(View view) {
             int clickedItemIndex=getAdapterPosition();
-
             mCursor.moveToPosition(clickedItemIndex);
             int _id=mCursor.getInt(mCursor.getColumnIndex(BookContract.BookEntry._ID));
             mOnClickListener.OnListItemClick(_id);

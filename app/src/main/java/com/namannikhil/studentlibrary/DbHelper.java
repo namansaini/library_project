@@ -28,7 +28,6 @@ public class DbHelper extends SQLiteOpenHelper {
                         StudentContract.StudentEntry.COLUMN_LNAME+" VARCHAR(20) NOT NULL, "+
                         StudentContract.StudentEntry.COLUMN_ADDRESS+" VARCHAR(100) NOT NULL, "+
                         StudentContract.StudentEntry.COLUMN_PHONE+" VARCHAR(10) NOT NULL, "+
-                        StudentContract.StudentEntry.COLUMN_FINE+" INT NOT NULL, "+
                         StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED+" INT NOT NULL);";
         final String createBook=
                 "CREATE TABLE "+ BookContract.BookEntry.TABLE_NAME+
@@ -36,7 +35,6 @@ public class DbHelper extends SQLiteOpenHelper {
                         BookContract.BookEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                         BookContract.BookEntry.COLUMN_NAME+" VARCHAR(100) NOT NULL, "+
                         BookContract.BookEntry.COLUMN_AUTHOR+" VARCHAR(100) NOT NULL, "+
-                        BookContract.BookEntry.COLUMN_FLAG+" INT NOT NULL, "+
                         BookContract.BookEntry.COLUMN_QTY+" INT NOT NULL, " +
                         BookContract.BookEntry.COLUMN_PURCHASE_DT+" VARCHAR(15) NOT NULL);";
         final String createIssues=
@@ -47,10 +45,13 @@ public class DbHelper extends SQLiteOpenHelper {
                         IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+" INT NOT NULL, "+
                         IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE+" VARCHAR(20) NOT NULL, "+
                         IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE+" VARCHAR(20) NOT NULL, " +
+                        IssuesContract.IssuesEntry.COLUMN_FINE+" INT NOT NULL, " +
+                        IssuesContract.IssuesEntry.COLUMN_FLAG+" INT NOT NULL, " +
                         "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_BOOK_ID+") REFERENCES "+ BookContract.BookEntry.TABLE_NAME+"("+
                         BookContract.BookEntry._ID+"), "+
                         "FOREIGN KEY ("+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+") REFERENCES "+ StudentContract.StudentEntry.TABLE_NAME+"("+
                         StudentContract.StudentEntry._ID+"));";
+
         sqLiteDatabase.execSQL(createBook);
         sqLiteDatabase.execSQL(createStudent);
         sqLiteDatabase.execSQL(createIssues);
@@ -61,6 +62,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + StudentContract.StudentEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + BookContract.BookEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + IssuesContract.IssuesEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

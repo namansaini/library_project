@@ -30,6 +30,7 @@
             android:id="@+id/book_title"
             android:fontFamily="sans-serif"
             android:layout_weight="1"
+            android:textStyle="bold"
             tools:text="Database Management System"/>
         <TextView
             android:layout_width="wrap_content"

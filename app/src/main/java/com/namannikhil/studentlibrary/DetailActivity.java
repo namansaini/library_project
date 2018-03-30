@@ -31,7 +31,8 @@ public class DetailActivity extends AppCompatActivity {
         bookId=getIntent().getIntExtra("bookId",1);
         sId=getIntent().getIntExtra("sId",1);
 
-        String projection[]={BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_PURCHASE_DT};
+        //getting details of book to show in activity
+        final String projection[]={BookContract.BookEntry.COLUMN_NAME, BookContract.BookEntry.COLUMN_AUTHOR, BookContract.BookEntry.COLUMN_PURCHASE_DT};
         String selection= BookContract.BookEntry._ID+"="+bookId;
         mDb=helper.getReadableDatabase();
         Cursor cursor=mDb.query(BookContract.BookEntry.TABLE_NAME,projection,selection,null,null,null,null);
@@ -41,15 +42,16 @@ public class DetailActivity extends AppCompatActivity {
         String purchaseDate=cursor.getString(cursor.getColumnIndex(BookContract.BookEntry.COLUMN_PURCHASE_DT));
 
 
-        TextView titleView=(TextView) findViewById(R.id.titleView);
-        TextView authorView=(TextView) findViewById(R.id.authorView);
-        TextView purchaseDateView=(TextView) findViewById(R.id.purchaseDateView);
-        Button issue=(Button) findViewById(R.id.issueButton);
+        TextView titleView= findViewById(R.id.titleView);
+        TextView authorView= findViewById(R.id.authorView);
+        TextView purchaseDateView= findViewById(R.id.purchaseDateView);
+        Button issue=findViewById(R.id.issueButton);
 
         titleView.setText(title);
         authorView.setText(author);
         purchaseDateView.setText(purchaseDate);
 
+        //getting no of issued books of a particular student
         String projection2[]={StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED};
         String selection2= StudentContract.StudentEntry._ID+"="+sId;
         cursor=mDb.query(StudentContract.StudentEntry.TABLE_NAME,projection2,selection2,null,null,null,null);
@@ -59,40 +61,91 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v)
             {
 
-                boolean check=queryForZeroQuantity();
-                mDb=helper.getWritableDatabase();
-
-                    ContentValues cv = new ContentValues();
-                    if(check) {
-                        cv.put(BookContract.BookEntry.COLUMN_FLAG, 1);
+                //Checking if same book is issued already
+                mDb=helper.getReadableDatabase();
+                String projection[]={IssuesContract.IssuesEntry.COLUMN_BOOK_ID};
+                Cursor cursor=mDb.query(IssuesContract.IssuesEntry.TABLE_NAME,projection,
+                        IssuesContract.IssuesEntry.COLUMN_BOOK_ID+"="+bookId+" AND "+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+"="+sId+" AND "+ IssuesContract.IssuesEntry.COLUMN_FLAG+"=1",
+                        null,null,null,null);
+                TotalFine t=new TotalFine();
+                int cost=t.totalFine(helper,sId);
+                if(cursor.getCount()>0)
+                {
+                    toastNotIssue();
+                }
+                else //same book isn't there
+                    if(cost>=200)
+                    {
+                        toastPayFine();
                     }
-                    cv.put(BookContract.BookEntry.COLUMN_QTY, quantity);
-                    String selection = BookContract.BookEntry._ID + "=" + bookId;
-                    mDb.update(BookContract.BookEntry.TABLE_NAME, cv, selection, null);
+                    else {
+                        //updating quantity of books
+                        settingQuantity();
+                        mDb = helper.getWritableDatabase();
 
-                cv=new ContentValues();
-                cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, noOfIssuedBooks+1);
-                String selection2= StudentContract.StudentEntry._ID+"="+sId;
-                mDb.update(StudentContract.StudentEntry.TABLE_NAME,cv,selection2,null);
+                        ContentValues cv = new ContentValues();
+                        cv.put(BookContract.BookEntry.COLUMN_QTY, quantity - 1);
+                        String selection = BookContract.BookEntry._ID + "=" + bookId;
+                        mDb.update(BookContract.BookEntry.TABLE_NAME, cv, selection, null);
 
-                cv=new ContentValues();
-                Calendar c1=Calendar.getInstance();
-                Date d1 = c1.getTime();
-                c1.add(Calendar.DATE,45);
-                Date d2=c1.getTime();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                String issueDate = df.format(d1);
-                String expiryDate=df.format(d2);
-                cv.put(IssuesContract.IssuesEntry.COLUMN_STUDENT_ID,sId);
-                cv.put(IssuesContract.IssuesEntry.COLUMN_BOOK_ID,bookId);
-                cv.put(IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE,issueDate);
-                cv.put(IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE,expiryDate);
-                mDb.insert(IssuesContract.IssuesEntry.TABLE_NAME,null,cv);
-                finish();
+                        //updating no of issued books
+                        cv = new ContentValues();
+                        cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, noOfIssuedBooks + 1);
+                        String selection2 = StudentContract.StudentEntry._ID + "=" + sId;
+                        mDb.update(StudentContract.StudentEntry.TABLE_NAME, cv, selection2, null);
+
+                        //insertion in relationship table "issues"
+                        cv = new ContentValues();
+                        Calendar c1 = Calendar.getInstance();
+                        Date d1 = c1.getTime();
+                        c1.add(Calendar.DATE, 25);
+                        Date d2 = c1.getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        String issueDate = df.format(d1);
+                        String expiryDate = df.format(d2);
+
+                        String projection2[] = {IssuesContract.IssuesEntry._ID};
+                        String where = IssuesContract.IssuesEntry.COLUMN_STUDENT_ID + "=? AND " + IssuesContract.IssuesEntry.COLUMN_BOOK_ID + "=?";
+                        String args[] = {String.valueOf(sId), String.valueOf(bookId)};
+                        Cursor c2 = mDb.query(IssuesContract.IssuesEntry.TABLE_NAME, projection2, where, args, null, null, null);
+                        if (c2.getCount() > 0)//same book with same student exists in issues table
+                        {
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE, issueDate);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE, expiryDate);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_FLAG, 1);
+                            mDb.update(IssuesContract.IssuesEntry.TABLE_NAME, cv, where, args);
+                            finish();
+                        }
+                        else
+                            {
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_STUDENT_ID, sId);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_BOOK_ID, bookId);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_ISSUE_DATE, issueDate);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE, expiryDate);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_FINE, 0);
+                            cv.put(IssuesContract.IssuesEntry.COLUMN_FLAG, 1);
+                            mDb.insert(IssuesContract.IssuesEntry.TABLE_NAME, null, cv);
+                            toastIsIssue();
+                            finish();
+                        }
+                    }
             }
         });
     }
-    public boolean queryForZeroQuantity()
+
+    private void toastPayFine() {
+        Toast.makeText(this,"Fine is greater than or equal to 200, first pay the fine!!",Toast.LENGTH_LONG).show();
+    }
+
+    private void toastIsIssue() {
+        Toast.makeText(this,"Book Successfully issued",Toast.LENGTH_LONG).show();
+    }
+
+    private void toastNotIssue() {
+        Toast.makeText(this,"You cannot issue the same book more than once!!",Toast.LENGTH_LONG).show();
+    }
+
+    public void settingQuantity()
     {
         mDb=helper.getReadableDatabase();
         String projection[]={BookContract.BookEntry.COLUMN_QTY};
@@ -100,9 +153,5 @@ public class DetailActivity extends AppCompatActivity {
         Cursor c=mDb.query(BookContract.BookEntry.TABLE_NAME,projection,selection,null,null,null,null);
         c.moveToPosition(0);
         quantity=c.getInt(c.getColumnIndex(BookContract.BookEntry.COLUMN_QTY));
-        if(quantity--==0)
-            return true;
-        else
-            return false;
     }
 }

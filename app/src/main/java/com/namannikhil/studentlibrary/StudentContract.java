@@ -19,7 +19,6 @@ public class StudentContract {
         public static final String COLUMN_LNAME="lname";
         public static final String COLUMN_ADDRESS="address";
         public static final String COLUMN_PHONE="phone";
-        public static final String COLUMN_FINE="fine";
         public static final String COLUMN_NO_OF_BOOKS_ISSUED="booksIssued";
     }
 }

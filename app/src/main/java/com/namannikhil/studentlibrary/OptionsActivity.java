@@ -29,6 +29,12 @@ private int sId;
                 newScreen2();
             }
         });
+        payFine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newScreen3();
+            }
+        });
     }
     void newScreen1()
     {
@@ -39,6 +45,12 @@ private int sId;
     void newScreen2()
     {
         Intent intent=new Intent(this,IssuedBooks.class);
+        intent.putExtra("sId",sId);
+        startActivity(intent);
+    }
+    void newScreen3()
+    {
+        Intent intent =new Intent(this,Fine.class);
         intent.putExtra("sId",sId);
         startActivity(intent);
     }

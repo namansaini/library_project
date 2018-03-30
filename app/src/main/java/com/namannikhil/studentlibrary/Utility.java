@@ -29,7 +29,6 @@ public class Utility {
         cv.put(StudentContract.StudentEntry.COLUMN_LNAME, "Saini");
         cv.put(StudentContract.StudentEntry.COLUMN_ADDRESS, "E-2/149B,Shastri Nagar, Delhi-52");
         cv.put(StudentContract.StudentEntry.COLUMN_PHONE, "7838780990");
-        cv.put(StudentContract.StudentEntry.COLUMN_FINE, 0);
         cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, 0);
         list.add(cv);
 
@@ -40,7 +39,6 @@ public class Utility {
         cv.put(StudentContract.StudentEntry.COLUMN_LNAME, "Jain");
         cv.put(StudentContract.StudentEntry.COLUMN_ADDRESS, "Rohini West");
         cv.put(StudentContract.StudentEntry.COLUMN_PHONE, "1234567890");
-        cv.put(StudentContract.StudentEntry.COLUMN_FINE, 0);
         cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, 0);
         list.add(cv);
 
@@ -48,33 +46,29 @@ public class Utility {
         cv = new ContentValues();
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Databse Management System");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Henry F. Korth");
-        cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
         cv.put(BookContract.BookEntry.COLUMN_QTY, 5);
-        cv.put(BookContract.BookEntry.COLUMN_NAME, "14-10-2005");
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "14-10-2005");
         list2.add(cv);
 
         cv = new ContentValues();
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Databse Management System");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Almasri Navathe");
-        cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
         cv.put(BookContract.BookEntry.COLUMN_QTY, 6);
-        cv.put(BookContract.BookEntry.COLUMN_NAME, "08-07-2007");
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "08-07-2007");
         list2.add(cv);
 
         cv = new ContentValues();
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Operating System Design");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Galvin");
-        cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
         cv.put(BookContract.BookEntry.COLUMN_QTY, 5);
-        cv.put(BookContract.BookEntry.COLUMN_NAME, "02-04-2012");
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "02-04-2012");
         list2.add(cv);
 
         cv = new ContentValues();
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Digital Design");
         cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "M. Morris Mano");
-        cv.put(BookContract.BookEntry.COLUMN_FLAG, 0);
         cv.put(BookContract.BookEntry.COLUMN_QTY, 10);
-        cv.put(BookContract.BookEntry.COLUMN_NAME, "26-10-2008");
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "26-10-2008");
         list2.add(cv);
         try {
             db.beginTransaction();
