@@ -75,10 +75,9 @@ public class Fine extends AppCompatActivity {
         }
        if (d1.after(d2)) {
             mDb = helper.getReadableDatabase();
+            Toast.makeText(this,"current date is greater than expiry date",Toast.LENGTH_LONG).show();
             int difference = (int) (d1.getTime() - d2.getTime());
             int daysDiff= (int)TimeUnit.MILLISECONDS.toDays(difference);
-
-            Toast.makeText(this,daysDiff+" hahaha",Toast.LENGTH_LONG).show();
             int fine = daysDiff*2;
             ContentValues cv = new ContentValues();
             cv.put(IssuesContract.IssuesEntry.COLUMN_FINE, fine);

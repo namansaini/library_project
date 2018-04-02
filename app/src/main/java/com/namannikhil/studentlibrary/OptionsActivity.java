@@ -1,6 +1,8 @@
 package com.namannikhil.studentlibrary;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,5 +55,29 @@ private int sId;
         Intent intent =new Intent(this,Fine.class);
         intent.putExtra("sId",sId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+       final AlertDialog.Builder builder= new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to exit?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(dialogInterface!=null)
+                            dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog=builder.create();
+                alertDialog.show();
     }
 }
