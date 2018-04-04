@@ -73,17 +73,61 @@ public class Fine extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-       if (d1.after(d2)) {
+        if(!d1.equals(d2)) {
+            int daysDiff = daysFinder(d1, d2);
             mDb = helper.getReadableDatabase();
-            Toast.makeText(this,"current date is greater than expiry date",Toast.LENGTH_LONG).show();
-            int difference = (int) (d1.getTime() - d2.getTime());
-            int daysDiff= (int)TimeUnit.MILLISECONDS.toDays(difference);
-            int fine = daysDiff*2;
+            Toast.makeText(this, daysDiff+"", Toast.LENGTH_LONG).show();
+            int fine = daysDiff * 2;
             ContentValues cv = new ContentValues();
             cv.put(IssuesContract.IssuesEntry.COLUMN_FINE, fine);
             mDb.update(IssuesContract.IssuesEntry.TABLE_NAME, cv, IssuesContract.IssuesEntry._ID + "=" + issueId, null);
-            fineUpdated=true;
+            fineUpdated = true;
         }
+
+    }
+
+    private int daysFinder(Date d1,Date d2)
+    {
+        int no_of_days=0;
+        int days=365;
+        if((d2.getYear() % 4 == 0 && d2.getYear() % 100 != 0) || (d2.getYear() % 400 == 0))
+        {
+            days=366;
+        }
+        if(d1.getYear()!=d2.getYear())
+        {
+            no_of_days+=days*(d2.getYear()-d1.getYear());
+            if(d1.getMonth()<=d2.getMonth())
+            {
+                no_of_days+=30*(d2.getMonth()-d1.getMonth());
+            }
+            else
+            {
+                no_of_days-=30*(d1.getMonth()-d2.getMonth());
+            }
+            if (d1.getDate() <= d2.getDate())
+            {
+                no_of_days+=d2.getDate()-d1.getDate();
+            }
+            else
+            {
+                no_of_days-=d1.getDate()-d2.getDate();
+            }
+        }
+        else
+        if(d1.getMonth()!=d2.getMonth())
+        {
+            no_of_days+=30*Math.abs(d1.getMonth()-d2.getMonth());
+            if (d1.getDate() <= d2.getDate())
+            {
+                no_of_days+=d2.getDate()-d1.getDate();
+            }
+            else
+            {
+                no_of_days-=(d1.getDate()-d2.getDate());
+            }
+        }
+        return no_of_days;
     }
 
     private Cursor queryReturn() {
@@ -97,12 +141,11 @@ public class Fine extends AppCompatActivity {
                 + BookContract.BookEntry.TABLE_NAME + " B "
                 + "WHERE I." + IssuesContract.IssuesEntry.COLUMN_STUDENT_ID + "=" + sId + " AND I."
                 + IssuesContract.IssuesEntry.COLUMN_BOOK_ID + "=B." + BookContract.BookEntry._ID
-                +" AND I."+ IssuesContract.IssuesEntry.COLUMN_FINE+">0"
+               // +" AND I."+ IssuesContract.IssuesEntry.COLUMN_FINE+">0"
                 + ";";
         //Log.v("asd", query);
 
         Cursor cursor = mDb.rawQuery(query, null);
-
 
         for(int i=0;i<cursor.getCount();i++)
         {
@@ -112,8 +155,18 @@ public class Fine extends AppCompatActivity {
                 int issueId = cursor.getInt(cursor.getColumnIndex(IssuesContract.IssuesEntry._ID));
                 calculateAndInsertFine(expiryDate, issueId);
         }
-        if(fineUpdated)
-            cursor = mDb.rawQuery(query, null);
+        String query2="SELECT " + "B." + BookContract.BookEntry.COLUMN_NAME + ", "
+                + "I." + IssuesContract.IssuesEntry._ID + ", "
+                + "B." + BookContract.BookEntry.COLUMN_AUTHOR + ", "
+                + "I." + IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE + ", "
+                + "I." + IssuesContract.IssuesEntry.COLUMN_FINE + " FROM " +
+                IssuesContract.IssuesEntry.TABLE_NAME + " I, "
+                + BookContract.BookEntry.TABLE_NAME + " B "
+                + "WHERE I." + IssuesContract.IssuesEntry.COLUMN_STUDENT_ID + "=" + sId + " AND I."
+                + IssuesContract.IssuesEntry.COLUMN_BOOK_ID + "=B." + BookContract.BookEntry._ID
+                +" AND I."+ IssuesContract.IssuesEntry.COLUMN_FINE+">0"
+                + ";";
+            cursor = mDb.rawQuery(query2, null);
         TotalFine t=new TotalFine();
             int cost=t.totalFine(helper,sId);
         finePrice.setText(String.valueOf(cost) + " ₹");
