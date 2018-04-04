@@ -60,13 +60,14 @@ private int sId;
     @Override
     public void onBackPressed()
     {
-       final AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
                 builder.setMessage("Are you sure you want to exit?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
                     }
 
                 });

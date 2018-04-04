@@ -62,26 +62,32 @@ public class Fine extends AppCompatActivity {
     }
 
     private void calculateAndInsertFine(String expiryDate, int issueId) {
-        fineUpdated=false;
         Calendar ca = Calendar.getInstance();
-        Date d1 = ca.getTime();
+        Date d2 = ca.getTime();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        Date d2 = new Date();
+        Date d1 = new Date();
         try {
-            d2 = df.parse(expiryDate);
+            d1 = df.parse(expiryDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(!d1.equals(d2)) {
+        //d1 ---> Expiry date
+        //d2 ---> Current Date
+        if(d2.after(d1)) {
             int daysDiff = daysFinder(d1, d2);
             mDb = helper.getReadableDatabase();
-            Toast.makeText(this, daysDiff+"", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, daysDiff+"", Toast.LENGTH_LONG).show();
+            /*String fineProjection[]={IssuesContract.IssuesEntry.COLUMN_FINE};
+            Cursor c=mDb.query(IssuesContract.IssuesEntry.TABLE_NAME,fineProjection,IssuesContract.IssuesEntry._ID + "=" + issueId,
+                    null,null,null,null);
+            c.moveToPosition(0);
+            int oldFine=c.getInt(c.getColumnIndex(IssuesContract.IssuesEntry.COLUMN_FINE));
+            c.close();*/
             int fine = daysDiff * 2;
             ContentValues cv = new ContentValues();
             cv.put(IssuesContract.IssuesEntry.COLUMN_FINE, fine);
             mDb.update(IssuesContract.IssuesEntry.TABLE_NAME, cv, IssuesContract.IssuesEntry._ID + "=" + issueId, null);
-            fineUpdated = true;
         }
 
     }
@@ -90,11 +96,13 @@ public class Fine extends AppCompatActivity {
     {
         int no_of_days=0;
         int days=365;
+
+        Log.v("asd",d2.getDate()+" "+d2.getMonth()+" "+d2.getYear());
         if((d2.getYear() % 4 == 0 && d2.getYear() % 100 != 0) || (d2.getYear() % 400 == 0))
         {
             days=366;
         }
-        if(d1.getYear()!=d2.getYear())
+        if(d1.getYear()<d2.getYear())
         {
             no_of_days+=days*(d2.getYear()-d1.getYear());
             if(d1.getMonth()<=d2.getMonth())
@@ -115,7 +123,7 @@ public class Fine extends AppCompatActivity {
             }
         }
         else
-        if(d1.getMonth()!=d2.getMonth())
+        if(d1.getMonth()<=d2.getMonth())
         {
             no_of_days+=30*Math.abs(d1.getMonth()-d2.getMonth());
             if (d1.getDate() <= d2.getDate())

@@ -98,7 +98,7 @@ public class DetailActivity extends AppCompatActivity {
                         cv = new ContentValues();
                         Calendar c1 = Calendar.getInstance();
                         Date d1 = c1.getTime();
-                        c1.add(Calendar.DATE, 25);
+                        c1.add(Calendar.DATE, 45);
                         Date d2 = c1.getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         String issueDate = df.format(d1);
