@@ -69,6 +69,11 @@ public class DetailActivity extends AppCompatActivity {
                         null,null,null,null);
                 TotalFine t=new TotalFine();
                 int cost=t.totalFine(helper,sId);
+                String pro[]={StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED};
+                Cursor cursor2=mDb.query(StudentContract.StudentEntry.TABLE_NAME,pro, StudentContract.StudentEntry._ID+"="+sId,
+                        null,null,null,null);
+                cursor2.moveToPosition(0);
+                int noIssuedBoks=cursor2.getInt(cursor2.getColumnIndex(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED));
                 if(cursor.getCount()>0)
                 {
                     toastNotIssue();
@@ -78,7 +83,13 @@ public class DetailActivity extends AppCompatActivity {
                     {
                         toastPayFine();
                     }
-                    else {
+                    else
+                        if(noIssuedBoks>=3)
+                        {
+                            toastFiveBooks();
+                        }
+                else
+                        {
                         //updating quantity of books
                         settingQuantity();
                         mDb = helper.getWritableDatabase();
@@ -131,6 +142,10 @@ public class DetailActivity extends AppCompatActivity {
                     }
             }
         });
+    }
+
+    private void toastFiveBooks() {
+        Toast.makeText(this,"You can't issue more than 3 books at once!!",Toast.LENGTH_LONG).show();
     }
 
     private void toastPayFine() {

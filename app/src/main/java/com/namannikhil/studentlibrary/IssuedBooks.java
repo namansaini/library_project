@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -24,21 +25,36 @@ public class IssuedBooks extends AppCompatActivity implements IssuedBooksAdapter
     DbHelper helper= new DbHelper(this);
     int sId;
     IssuedBooksAdapter mAdapter;
+    View emptyView;
+    RecyclerView issuedBooks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issued_books);
-
+        emptyView=findViewById(R.id.empty_view);
         sId=getIntent().getIntExtra("sId",1);
         mDb=helper.getReadableDatabase();
         Cursor cursor=queryReturn();
-        RecyclerView issuedBooks=findViewById(R.id.second_recycler_view);
+        issuedBooks=findViewById(R.id.second_recycler_view);
         issuedBooks.setHasFixedSize(false);
         RecyclerView.LayoutManager lM=new LinearLayoutManager(this);
         issuedBooks.setLayoutManager(lM);
         mAdapter=new IssuedBooksAdapter(this,cursor,this);
         issuedBooks.setAdapter(mAdapter);
-
+        visibleView();
+    }
+    public void visibleView()
+    {
+        if(mAdapter.getItemCount()==0)
+        {
+            issuedBooks.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            issuedBooks.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
     }
     public Cursor queryReturn()
     {
@@ -51,12 +67,14 @@ public class IssuedBooks extends AppCompatActivity implements IssuedBooksAdapter
                 +";";
         return mDb.rawQuery(query,null);
     }
-
+/*
     @Override
     protected void onResume() {
         super.onResume();
         mAdapter.swapCursor(queryReturn());
+        visibleView();
     }
+    */
 
 
     @Override
@@ -82,6 +100,16 @@ public class IssuedBooks extends AppCompatActivity implements IssuedBooksAdapter
             mDb.update(BookContract.BookEntry.TABLE_NAME, cv, selection, null);
             Toast.makeText(this, "Book Successfully returned", Toast.LENGTH_LONG).show();
             c.close();
+            cv=new ContentValues();
+        String pro[]={StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED};
+        Cursor cursor2=mDb.query(StudentContract.StudentEntry.TABLE_NAME,pro, StudentContract.StudentEntry._ID+"="+sId,
+                null,null,null,null);
+        cursor2.moveToPosition(0);
+        int noIssuedBoks=cursor2.getInt(cursor2.getColumnIndex(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED));
+            cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED,noIssuedBoks-1);
+            mDb.update(StudentContract.StudentEntry.TABLE_NAME,cv, StudentContract.StudentEntry._ID+"="+sId,null);
+            cursor2.close();
             mAdapter.swapCursor(queryReturn());
+        visibleView();
     }
 }
