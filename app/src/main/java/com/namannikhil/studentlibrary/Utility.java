@@ -70,6 +70,62 @@ public class Utility {
         cv.put(BookContract.BookEntry.COLUMN_QTY, 10);
         cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "26-10-2008");
         list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Engineering Thermodynamics");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "P. K. Nag");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 25);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "06-04-2012");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Engineering Mathematics");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "H. C. Taneja");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 40);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "02-11-2006");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Let us C");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Yashwant Kanekar");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 15);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "07-07-2011");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Computer Organisation And Architecture");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "M. Morris Mano");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 10);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "23-12-2007");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Object Oriented Programming in C++");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "E. Balaguruswami");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 13);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "20-12-2009");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Data Structures");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Tannenbaum");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 14);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "21-09-2011");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Analog Electronics");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Balbir Kumar");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 18);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "08-01-2005");
+        list2.add(cv);
+
+        cv = new ContentValues();
+        cv.put(BookContract.BookEntry.COLUMN_NAME, "Discrete Structures");
+        cv.put(BookContract.BookEntry.COLUMN_AUTHOR, "Kenneth H. Rosen");
+        cv.put(BookContract.BookEntry.COLUMN_QTY, 1);
+        cv.put(BookContract.BookEntry.COLUMN_PURCHASE_DT, "25-12-2012");
+        list2.add(cv);
         try {
             db.beginTransaction();
             db.delete(StudentContract.StudentEntry.TABLE_NAME, null, null);
