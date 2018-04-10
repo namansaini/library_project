@@ -55,13 +55,20 @@ public class Fine extends AppCompatActivity {
     private void FinePayment() {
         mDb = helper.getWritableDatabase();
         ContentValues cv=new ContentValues();
+        Calendar ca = Calendar.getInstance();
+        Date d2 = ca.getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String curr_dt=df.format(d2);
+        cv.put(IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE,curr_dt);
+        mDb.update(IssuesContract.IssuesEntry.TABLE_NAME,cv, IssuesContract.IssuesEntry.COLUMN_FLAG + "=1",null);
+
         cv.put(IssuesContract.IssuesEntry.COLUMN_FINE,0);
         mDb.update(IssuesContract.IssuesEntry.TABLE_NAME,cv,IssuesContract.IssuesEntry.COLUMN_FINE + ">0" +
                 " AND "+ IssuesContract.IssuesEntry.COLUMN_STUDENT_ID+"="+sId,null);
         mAdapter.swapCursor(queryReturn());
     }
 
-    private void calculateAndInsertFine(String expiryDate, int issueId) {
+    private void calculateAndInsertFine(String expiryDate, int issueId, int flag) {
         Calendar ca = Calendar.getInstance();
         Date d2 = ca.getTime();
 
@@ -74,7 +81,7 @@ public class Fine extends AppCompatActivity {
         }
         //d1 ---> Expiry date
         //d2 ---> Current Date
-        if(d2.after(d1)) {
+        if(d2.after(d1) && flag==1) {
             int daysDiff = daysFinder(d1, d2);
             mDb = helper.getReadableDatabase();
             //Toast.makeText(this, daysDiff+"", Toast.LENGTH_LONG).show();
@@ -143,6 +150,7 @@ public class Fine extends AppCompatActivity {
         String query = "SELECT " + "B." + BookContract.BookEntry.COLUMN_NAME + ", "
                 + "I." + IssuesContract.IssuesEntry._ID + ", "
                 + "B." + BookContract.BookEntry.COLUMN_AUTHOR + ", "
+                + "I." + IssuesContract.IssuesEntry.COLUMN_FLAG + ", "
                 + "I." + IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE + ", "
                 + "I." + IssuesContract.IssuesEntry.COLUMN_FINE + " FROM " +
                 IssuesContract.IssuesEntry.TABLE_NAME + " I, "
@@ -161,7 +169,8 @@ public class Fine extends AppCompatActivity {
             cursor.moveToPosition(i);
                 String expiryDate = cursor.getString(cursor.getColumnIndex(IssuesContract.IssuesEntry.COLUMN_EXPIRY_DATE));
                 int issueId = cursor.getInt(cursor.getColumnIndex(IssuesContract.IssuesEntry._ID));
-                calculateAndInsertFine(expiryDate, issueId);
+                int flag=cursor.getInt(cursor.getColumnIndex(IssuesContract.IssuesEntry.COLUMN_FLAG));
+                calculateAndInsertFine(expiryDate, issueId, flag);
         }
         String query2="SELECT " + "B." + BookContract.BookEntry.COLUMN_NAME + ", "
                 + "I." + IssuesContract.IssuesEntry._ID + ", "

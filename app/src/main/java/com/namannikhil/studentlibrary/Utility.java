@@ -42,6 +42,15 @@ public class Utility {
         cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, 0);
         list.add(cv);
 
+        cv = new ContentValues();
+        cv.put(StudentContract.StudentEntry.COLUMN_USERNAME, "gitanjalibhola");
+        cv.put(StudentContract.StudentEntry.COLUMN_PASSWORD, "abc12345");
+        cv.put(StudentContract.StudentEntry.COLUMN_FNAME, "Gitanjali");
+        cv.put(StudentContract.StudentEntry.COLUMN_LNAME, "Bhola");
+        cv.put(StudentContract.StudentEntry.COLUMN_ADDRESS, "X City");
+        cv.put(StudentContract.StudentEntry.COLUMN_PHONE, "9876543210");
+        cv.put(StudentContract.StudentEntry.COLUMN_NO_OF_BOOKS_ISSUED, 0);
+        list.add(cv);
 
         cv = new ContentValues();
         cv.put(BookContract.BookEntry.COLUMN_NAME, "Databse Management System");
