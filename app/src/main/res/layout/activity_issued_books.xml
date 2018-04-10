@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.namannikhil.studentlibrary.IssuedBooks">
+    tools:context="com.namannikhil.studentlibrary.IssuedBooks"
+    android:background="@drawable/book_bg">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/second_recycler_view"
@@ -35,6 +36,7 @@
             android:fontFamily="sans-serif-medium"
             android:paddingTop="16dp"
             android:text="It's a bit lonely here..."
+            android:textColor="@android:color/white"
             android:textAppearance="?android:textAppearanceMedium"/>
 
         <TextView

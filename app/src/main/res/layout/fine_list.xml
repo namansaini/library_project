@@ -21,12 +21,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:textStyle="bold"
+                    android:textColor="@android:color/white"
                     android:id="@+id/fineTitle"
                     android:layout_weight="1"
                     tools:text="Database Management System"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:textColor="@android:color/white"
                     android:id="@+id/fineAuthor"
                     android:layout_weight="1"
                     tools:text="Naman Saini"/>
@@ -35,6 +37,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="60dp"
                 android:layout_marginLeft="60dp"
@@ -43,6 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -53,5 +57,5 @@
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/black"/>
+            android:background="@android:color/white"/>
     </LinearLayout>

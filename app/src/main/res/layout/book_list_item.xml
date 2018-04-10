@@ -12,6 +12,7 @@
     <TextView
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:textColor="@android:color/white"
         android:id="@+id/booksAvailable"
         android:layout_gravity="center_vertical"
 
@@ -27,6 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:textColor="@android:color/white"
             android:id="@+id/book_title"
             android:fontFamily="sans-serif"
             android:layout_weight="1"
@@ -35,6 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:textColor="@android:color/white"
             android:id="@+id/book_author"
             android:layout_weight="1"
             tools:text="Stephen Hawking"/>
@@ -44,5 +47,5 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/black"/>
+        android:background="@android:color/white"/>
 </LinearLayout>

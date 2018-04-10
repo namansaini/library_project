@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.namannikhil.studentlibrary.Fine">
+    tools:context="com.namannikhil.studentlibrary.Fine"
+    android:background="@drawable/book_bg">
 
     <Button
         android:id="@+id/payFine"

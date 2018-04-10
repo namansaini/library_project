@@ -18,7 +18,6 @@ public class AvailBooks extends AppCompatActivity implements AvailBooksAdapter.L
     private SQLiteDatabase mDb;
 
     private int sId;
-    private int buttonNo;
     private Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
